@@ -7,12 +7,10 @@ import org.json.simple.parser.JSONParser;
 
 public class ShamirSecretSharing {
     
-    // Function to convert a value from a given base to decimal
     public static BigInteger convertBase(String value, int base) {
         return new BigInteger(value, base);
     }
 
-    // Function to read JSON and decode the input points
     public static Map<BigInteger, BigInteger> decodePoints(String filepath) {
         Map<BigInteger, BigInteger> points = new HashMap<>();
         
@@ -32,8 +30,7 @@ public class ShamirSecretSharing {
                 System.out.println("Error: 'n' or 'k' is missing in 'keys'.");
                 return points;
             }
-    
-            // Iterating over the points, assuming the keys are numbered sequentially
+
             for (int i = 1; i <= n; i++) {
                 JSONObject point = (JSONObject) jsonObject.get(String.valueOf(i));
                 
@@ -63,7 +60,6 @@ public class ShamirSecretSharing {
     }
     
 
-    // Function to compute Lagrange interpolation at x = 0 (constant term of the polynomial)
     public static BigInteger lagrangeInterpolation(Map<BigInteger, BigInteger> points, int k) {
         BigInteger secret = BigInteger.ZERO;
         
@@ -80,22 +76,19 @@ public class ShamirSecretSharing {
             }
             secret = secret.add(term);
         }
-        return secret.mod(BigInteger.valueOf(2).pow(256));  // Constraint: Within a 256-bit number
+        return secret.mod(BigInteger.valueOf(2).pow(256)); 
     }
 
     public static void main(String[] args) {
-        // Load points from the JSON file
         String filepath1 = "C:\\Users\\Niranjan sanakall\\OneDrive\\Desktop\\ShamirSecreatSharing\\file1.json";
         String filepath2 = "C:\\Users\\Niranjan sanakall\\OneDrive\\Desktop\\ShamirSecreatSharing\\file2.json";
         
         Map<BigInteger, BigInteger> points1 = decodePoints(filepath1);
         Map<BigInteger, BigInteger> points2 = decodePoints(filepath2);
 
-        // Retrieve the value of k from one of the test cases for interpolation
-        int k1 = 3;  // Example for Test Case 1; adjust based on input
-        int k2 = 7;  // Example for Test Case 2; adjust based on input
+        int k1 = 3;
+        int k2 = 7;
 
-        // Find the secrets for both test cases
         BigInteger secret1 = lagrangeInterpolation(points1, k1);
         BigInteger secret2 = lagrangeInterpolation(points2, k2);
 
